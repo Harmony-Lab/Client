@@ -4,10 +4,8 @@ import styled from "styled-components";
 //전체 button style
 
 const StyledButton = styled.button`
-  min-width: 300px;
-  width: calc(22%);
-  min-height: 40px;
-  height: calc(7%);
+  width: 300px;
+  height: 40px;
   display: inline-block;
   text-align: center;
   overflow: hidden;
