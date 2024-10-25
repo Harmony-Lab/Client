@@ -8,13 +8,13 @@ const Container = styled.div`
   height: calc(10%);
   display: flex;
   justify-content: center;
-  padding: 22px 0;
+  padding: 15px 0;
   background-color: rgba(147, 182, 94, 0.28);
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 6px 4px rgba(104, 127, 69, 0.5);
 `;
 
 const Logo = styled.div`
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 800;
   font-family: "Ruda";
   color: #48582f;
