@@ -1,7 +1,9 @@
 import "./App.css";
+import NavBar from "./components/NavBar";
+import Router from "./route/Router";
 
 function App() {
-  return <div className="App">TEST</div>;
+  return <Router />;
 }
 
 export default App;
