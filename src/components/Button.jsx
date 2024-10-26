@@ -4,7 +4,7 @@ import styled from "styled-components";
 //전체 button style
 
 const StyledButton = styled.button`
-  width: 300px;
+  min-width: 400px;
   height: 40px;
   display: inline-block;
   text-align: center;

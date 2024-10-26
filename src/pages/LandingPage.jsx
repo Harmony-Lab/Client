@@ -3,6 +3,7 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import WebCam from "../components/WebCam";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: calc(100%);
@@ -46,7 +47,9 @@ function LandingPage() {
   const [countdown, setCountdown] = useState(null);
   const [showButton, setShowButton] = useState(true);
   const [capture, setCapture] = useState(false);
+  const navigate = useNavigate();
 
+  //[todo] countdown
   useEffect(() => {
     let timer;
     if (countdown !== null) {
@@ -69,9 +72,28 @@ function LandingPage() {
     setCountdown(3);
   };
 
-  const handleCapture = (imageSrc) => {
+  //[todo] capture image -> ai POST request
+  const handleCapture = async (imageSrc) => {
     console.log("Captured image:", imageSrc);
     setCapture(false);
+
+    try {
+      //임시 api 요청 코드 구현
+      // const response = await fetch("http://api/analyze", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify({ image: imageSrc })
+      // });
+
+      // const data = await response.json();
+      navigate("/mood", {
+        state: { image: imageSrc, emotion: "happy" }
+      });
+    } catch (error) {
+      console.error("Error analyzing emotion:", error);
+    }
   };
 
   return (

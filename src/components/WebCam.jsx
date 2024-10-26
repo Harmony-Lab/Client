@@ -4,13 +4,13 @@ import Webcam from "react-webcam";
 const videoConstraints = {
   width: 1280,
   height: 720,
-  facingMode: "user",
+  facingMode: "user"
 };
 
 function WebCam({ onCapture = null }) {
-  const webcamRef = React.useRef(null);
+  const webcamRef = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (onCapture) {
       const imageSrc = webcamRef.current.getScreenshot();
       onCapture(imageSrc);

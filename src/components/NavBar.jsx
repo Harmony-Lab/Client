@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //[todo] navigation bar style
@@ -24,9 +24,7 @@ const Logo = styled.div`
 function NavBar() {
   const navigate = useNavigate();
   const handleClick = () => {
-    if (useParams() != "/") {
-      navigate("/");
-    }
+    if (location.pathname !== "/") navigate("/");
   };
   return (
     <Container>
