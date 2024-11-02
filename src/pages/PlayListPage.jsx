@@ -3,6 +3,7 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
+import PlayList from "../components/PlayList";
 
 const Container = styled.div`
   width: calc(100%);
@@ -10,7 +11,21 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #fffef4;
-  gap: 25px;
+  gap: 50px;
+`;
+
+const PlayListContainer = styled.div`
+  width: 386px;
+  min-height: 508px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  padding: 25px 0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: #fcf4dc;
+  border-top: 0.8px solid #48582f;
+  border-bottom: 0.8px solid #48582f;
+  box-sizing: border-box;
 `;
 
 function PlayListPage() {
@@ -36,6 +51,12 @@ function PlayListPage() {
   return (
     <Container>
       <NavBar />
+      <PlayListContainer>
+        <PlayList
+          title="Uptown Funk"
+          artist="Mark Ronson(feat. Bruno Mars)"
+        ></PlayList>
+      </PlayListContainer>
     </Container>
   );
 }
