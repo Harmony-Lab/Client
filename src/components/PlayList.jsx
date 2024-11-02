@@ -2,16 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 const PlayListWrapper = styled.div`
-  min-width: 276px;
   position: relative;
   color: #47292b;
   text-align: center;
   display: inline-block;
-  font-size: 24px;
-  font-family: "Ruda";
 `;
 
 const Text = styled.div`
+  font-size: 24px;
+  font-family: "Ruda";
   margin: 0;
   &.title {
     font-weight: 800;

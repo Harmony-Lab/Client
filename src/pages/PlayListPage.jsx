@@ -10,6 +10,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   background-color: #fffef4;
   gap: 50px;
 `;
@@ -28,9 +29,36 @@ const PlayListContainer = styled.div`
   box-sizing: border-box;
 `;
 
+const TextWrapper = styled.div`
+  min-width: 337px;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+  color: #ee4e4e;
+`;
+
+const Text = styled.div`
+  font-size: 48px;
+  font-weight: 900;
+  font-family: "Ruda";
+  margin: 0;
+
+  &.playlist {
+    color: #47292b;
+  }
+
+  &.emotion {
+    color: #ee4e4e;
+  }
+`;
+
 function PlayListPage() {
   const location = useLocation();
-  const emotion = location.state;
+  const navigate = useNavigate();
+  const emotion = location.state?.emotion;
 
   useEffect(() => {
     try {
@@ -48,15 +76,25 @@ function PlayListPage() {
     }
   });
 
+  const handleClick = () => {
+    navigate("/");
+  };
+
   return (
     <Container>
       <NavBar />
+      <TextWrapper>
+        <Text className="emotion">{emotion ? emotion : "happy"}</Text>
+        <Text className="playlist">Playlist</Text>
+      </TextWrapper>
       <PlayListContainer>
+        {/* 임시 더미 플레이리스트 -> 추후 api 구현 후 맵 구조로 변경 예정 */}
         <PlayList
           title="Uptown Funk"
           artist="Mark Ronson(feat. Bruno Mars)"
         ></PlayList>
       </PlayListContainer>
+      <Button title="RESTART" onClick={handleClick} />
     </Container>
   );
 }
