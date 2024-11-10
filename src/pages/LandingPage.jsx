@@ -79,17 +79,17 @@ function LandingPage() {
 
     try {
       //임시 api 요청 코드 구현
-      // const response = await fetch("http://api/analyze", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify({ image: imageSrc })
-      // });
+      const response = await fetch("http://localhost:8000/api/emotion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ img_path: imageSrc })
+      });
 
-      // const data = await response.json();
+      const data = await response.json();
       navigate("/mood", {
-        state: { image: imageSrc, emotion: "happy" }
+        state: { image: imageSrc, emotion: data.emotion }
       });
     } catch (error) {
       console.error("Error analyzing emotion:", error);
