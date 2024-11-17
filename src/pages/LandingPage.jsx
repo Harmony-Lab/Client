@@ -79,7 +79,7 @@ function LandingPage() {
 
     try {
       //임시 api 요청 코드 구현
-      const response = await fetch("http://localhost:8000/api/emotion", {
+      const response = await fetch("http://localhost:8000/api/emotions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
