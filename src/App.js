@@ -1,9 +1,13 @@
 import "./App.css";
-import NavBar from "./components/NavBar";
 import Router from "./route/Router";
+import { SessionProvider } from "./user/SessionProvider";
 
 function App() {
-  return <Router />;
+  return (
+    <SessionProvider>
+      <Router />
+    </SessionProvider>
+  );
 }
 
 export default App;

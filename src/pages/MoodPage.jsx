@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Button from "../components/Button";
@@ -50,11 +50,14 @@ const Text = styled.div`
 function MoodPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { image, emotion } = location.state;
+
+  const image = location.state?.image;
+  const emotionData = location.state?.emotion;
+  const emotion = emotionData ? emotionData.emotion : "happy";
 
   const handleClick = () => {
     navigate("/playlist", {
-      state: { emotion: "happy" }
+      state: { emotion }
     });
   };
 

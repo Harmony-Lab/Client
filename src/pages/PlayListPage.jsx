@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlayList from "../components/PlayList";
+import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -58,26 +59,42 @@ const Text = styled.div`
 function PlayListPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const emotion = location.state?.emotion;
+  const session = useSession();
+  const emotionData = location.state?.emotion;
+  const emotion = emotionData ? emotionData.emotion : "happy";
+  const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
-    try {
-      //임시 api 요청 코드 구현
-      // const response = await fetch("http://api/music", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify({ emotion: emotion})
-      // });
-      // const data = await response.json();
-    } catch (error) {
-      console.error("Error analyzing emotion:", error);
-    }
-  });
+    const fetchPlaylists = async () => {
+      try {
+        const sessionId = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("session_id="))
+          ?.split("=")[1];
+
+        const response = await fetch("http://localhost:8000/api/users/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        });
+        const data = await response.json();
+        setPlaylists(data.playlist.songs);
+      } catch (error) {
+        console.error("Error analyzing emotion:", error);
+      }
+    };
+
+    fetchPlaylists();
+  }, [session]);
 
   const handleClick = () => {
     navigate("/");
+  };
+
+  const handleSongClick = (url) => {
+    window.open(url, "_blank");
   };
 
   return (
@@ -88,11 +105,14 @@ function PlayListPage() {
         <Text className="playlist">Playlist</Text>
       </TextWrapper>
       <PlayListContainer>
-        {/* 임시 더미 플레이리스트 -> 추후 api 구현 후 맵 구조로 변경 예정 */}
-        <PlayList
-          title="Uptown Funk"
-          artist="Mark Ronson(feat. Bruno Mars)"
-        ></PlayList>
+        {playlists.map((song, index) => (
+          <PlayList
+            key={index}
+            title={song.title}
+            artist={song.artist}
+            onClick={() => handleSongClick(song.url)}
+          />
+        ))}
       </PlayListContainer>
       <Button title="RESTART" onClick={handleClick} />
     </Container>
