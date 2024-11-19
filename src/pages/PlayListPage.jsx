@@ -72,15 +72,17 @@ function PlayListPage() {
           .find((row) => row.startsWith("session_id="))
           ?.split("=")[1];
 
-        const response = await fetch("http://localhost:8000/api/users/", {
-          method: "GET",
+        const response = await fetch("http://localhost:8000/api/playlists/", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           credentials: "include"
         });
         const data = await response.json();
-        setPlaylists(data.playlist.songs);
+        if (data.songs && Array.isArray(data.songs)) {
+          setPlaylists(data.songs); // songs 배열을 상태에 설정
+        }
       } catch (error) {
         console.error("Error analyzing emotion:", error);
       }
