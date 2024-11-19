@@ -7,27 +7,29 @@ export const useSession = () => {
 };
 
 export const SessionProvider = ({ children }) => {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState(() => {
+    return localStorage.getItem("session_id") || null;
+  });
 
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8000/api/users/create-session"
-        );
+        const response = await fetch("/api/session");
         if (!response.ok) {
           throw new Error("세션 요청 실패");
         }
         const data = await response.json();
         setSession(data.session_id);
-        document.cookie = `session_id=${data.session_id}; path=/;`;
+        localStorage.setItem("session_id", data.session_id);
       } catch (error) {
         console.error("세션 요청 중 오류 발생:", error);
       }
     };
 
-    fetchSession();
-  }, []);
+    if (!session) {
+      fetchSession();
+    }
+  }, [session]);
 
   return (
     <SessionContext.Provider value={session}>

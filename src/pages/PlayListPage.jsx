@@ -60,18 +60,20 @@ function PlayListPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const session = useSession();
-  const emotionData = location.state?.emotion;
-  const emotion = emotionData ? emotionData.emotion : "happy";
+  const emotion = location.state?.emotion;
   const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     const fetchPlaylists = async () => {
-      try {
-        const sessionId = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("session_id="))
-          ?.split("=")[1];
+      const storedPlaylists = localStorage.getItem("playlists");
+      if (storedPlaylists) {
+        setPlaylists(JSON.parse(storedPlaylists));
+        return;
+      }
 
+      if (!session) return;
+
+      try {
         const response = await fetch("http://localhost:8000/api/playlists/", {
           method: "POST",
           headers: {
@@ -79,20 +81,52 @@ function PlayListPage() {
           },
           credentials: "include"
         });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch playlists");
+        }
+
         const data = await response.json();
         if (data.songs && Array.isArray(data.songs)) {
-          setPlaylists(data.songs); // songs 배열을 상태에 설정
+          setPlaylists(data.songs);
+          localStorage.setItem("playlists", JSON.stringify(data.songs));
         }
       } catch (error) {
-        console.error("Error analyzing emotion:", error);
+        console.error("Error fetching playlists:", error);
       }
     };
 
     fetchPlaylists();
   }, [session]);
 
-  const handleClick = () => {
-    navigate("/");
+  const handleClick = async () => {
+    try {
+      localStorage.removeItem("session_id");
+      localStorage.removeItem("playlists");
+
+      const response = await fetch(
+        "http://localhost:8000/api/users/restart-session",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to restart session");
+      }
+
+      const data = await response.json();
+
+      localStorage.setItem("session_id", data.session_id);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error restarting session:", error);
+    }
   };
 
   const handleSongClick = (url) => {
@@ -103,7 +137,7 @@ function PlayListPage() {
     <Container>
       <NavBar />
       <TextWrapper>
-        <Text className="emotion">{emotion ? emotion : "happy"}</Text>
+        <Text className="emotion">{emotion ? emotion : ""}</Text>
         <Text className="playlist">Playlist</Text>
       </TextWrapper>
       <PlayListContainer>
