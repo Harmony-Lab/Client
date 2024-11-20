@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlayList from "../components/PlayList";
+import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -58,41 +59,96 @@ const Text = styled.div`
 function PlayListPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const session = useSession();
   const emotion = location.state?.emotion;
+  const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
-    try {
-      //임시 api 요청 코드 구현
-      // const response = await fetch("http://api/music", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify({ emotion: emotion})
-      // });
-      // const data = await response.json();
-    } catch (error) {
-      console.error("Error analyzing emotion:", error);
-    }
-  });
+    const fetchPlaylists = async () => {
+      const storedPlaylists = localStorage.getItem("playlists");
+      if (storedPlaylists) {
+        setPlaylists(JSON.parse(storedPlaylists));
+        return;
+      }
 
-  const handleClick = () => {
-    navigate("/");
+      if (!session) return;
+
+      try {
+        const response = await fetch("http://localhost:8000/api/playlists/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch playlists");
+        }
+
+        const data = await response.json();
+        if (data.songs && Array.isArray(data.songs)) {
+          setPlaylists(data.songs);
+          localStorage.setItem("playlists", JSON.stringify(data.songs));
+        }
+      } catch (error) {
+        console.error("Error fetching playlists:", error);
+      }
+    };
+
+    fetchPlaylists();
+  }, [session]);
+
+  const handleClick = async () => {
+    try {
+      localStorage.removeItem("session_id");
+      localStorage.removeItem("playlists");
+
+      const response = await fetch(
+        "http://localhost:8000/api/users/restart-session",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to restart session");
+      }
+
+      const data = await response.json();
+
+      localStorage.setItem("session_id", data.session_id);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error restarting session:", error);
+    }
+  };
+
+  const handleSongClick = (url) => {
+    window.open(url, "_blank");
   };
 
   return (
     <Container>
       <NavBar />
       <TextWrapper>
-        <Text className="emotion">{emotion ? emotion : "happy"}</Text>
+        <Text className="emotion">{emotion ? emotion : ""}</Text>
         <Text className="playlist">Playlist</Text>
       </TextWrapper>
       <PlayListContainer>
-        {/* 임시 더미 플레이리스트 -> 추후 api 구현 후 맵 구조로 변경 예정 */}
-        <PlayList
-          title="Uptown Funk"
-          artist="Mark Ronson(feat. Bruno Mars)"
-        ></PlayList>
+        {playlists.map((song, index) => (
+          <PlayList
+            key={index}
+            title={song.title}
+            artist={song.artist}
+            onClick={() => handleSongClick(song.url)}
+          />
+        ))}
       </PlayListContainer>
       <Button title="RESTART" onClick={handleClick} />
     </Container>

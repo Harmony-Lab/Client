@@ -22,10 +22,10 @@ const Text = styled.div`
 `;
 
 function PlayList(props) {
-  const { title, artist } = props;
+  const { title, artist, onClick } = props;
 
   return (
-    <PlayListWrapper>
+    <PlayListWrapper onClick={onClick}>
       <Text className="title">{title ? title : "A title"}</Text>
       <Text className="artist">{artist ? artist : "the Artist"}</Text>
     </PlayListWrapper>

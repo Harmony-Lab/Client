@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import WebCam from "../components/WebCam";
 import { useNavigate } from "react-router-dom";
+import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -48,8 +49,8 @@ function LandingPage() {
   const [showButton, setShowButton] = useState(true);
   const [capture, setCapture] = useState(false);
   const navigate = useNavigate();
+  const session = useSession();
 
-  //[todo] countdown
   useEffect(() => {
     let timer;
     if (countdown !== null) {
@@ -72,18 +73,22 @@ function LandingPage() {
     setCountdown(3);
   };
 
-  //[todo] capture image -> ai POST request
   const handleCapture = async (imageSrc) => {
     console.log("Captured image:", imageSrc);
     setCapture(false);
 
     try {
-      //임시 api 요청 코드 구현
+      const sessionId = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("session_id="))
+        ?.split("=")[1];
+
       const response = await fetch("http://localhost:8000/api/emotions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({ img_path: imageSrc })
       });
 

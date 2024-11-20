@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//[todo] navigation bar style
 const Container = styled.div`
   width: calc(100%);
   height: calc(10%);
@@ -20,12 +19,38 @@ const Logo = styled.div`
   color: #48582f;
 `;
 
-//[todo] navigation bar routing
 function NavBar() {
   const navigate = useNavigate();
-  const handleClick = () => {
-    if (location.pathname !== "/") navigate("/");
+  const handleClick = async () => {
+    try {
+      localStorage.removeItem("session_id");
+      localStorage.removeItem("playlists");
+
+      const response = await fetch(
+        "http://localhost:8000/api/users/restart-session",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to restart session");
+      }
+
+      const data = await response.json();
+
+      localStorage.setItem("session_id", data.session_id);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error restarting session:", error);
+    }
   };
+
   return (
     <Container>
       <Logo onClick={handleClick}>MoodTune</Logo>
