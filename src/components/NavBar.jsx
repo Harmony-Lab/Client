@@ -27,7 +27,7 @@ function NavBar() {
       localStorage.removeItem("playlists");
 
       const response = await fetch(
-        "http://3.36.65.47:8000/api/users/restart-session",
+        "https://d1sfoak4w9c4ga.cloudfront.net/api/users/restart-session",
         {
           method: "GET",
           headers: {

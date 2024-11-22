@@ -74,7 +74,7 @@ function PlayListPage() {
       if (!session) return;
 
       try {
-        const response = await fetch("http://localhost:8000/api/playlists/", {
+        const response = await fetch("https://d1sfoak4w9c4ga.cloudfront.net/api/playlists/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
