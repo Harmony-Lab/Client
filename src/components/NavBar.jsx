@@ -27,7 +27,7 @@ function NavBar() {
       localStorage.removeItem("playlists");
 
       const response = await fetch(
-        "http://localhost:8000/api/users/restart-session",
+        "http://3.36.65.47:8000/api/users/restart-session",
         {
           method: "GET",
           headers: {

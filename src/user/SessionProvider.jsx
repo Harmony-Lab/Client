@@ -15,7 +15,7 @@ export const SessionProvider = ({ children }) => {
     const fetchSession = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8000/api/users/create-session"
+          "http://3.36.65.47:8000/api/users/create-session"
         );
         if (!response.ok) {
           throw new Error("세션 요청 실패");
