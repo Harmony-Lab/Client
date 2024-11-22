@@ -78,12 +78,7 @@ function LandingPage() {
     setCapture(false);
 
     try {
-      const sessionId = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("session_id="))
-        ?.split("=")[1];
-
-      const response = await fetch("http://localhost:8000/api/emotions", {
+      const response = await fetch("http://3.36.65.47:8000/api/emotions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
