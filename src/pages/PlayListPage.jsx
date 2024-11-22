@@ -75,7 +75,7 @@ function PlayListPage() {
 
       try {
         const response = await fetch(
-          "https://d1sfoak4w9c4ga.cloudfront.net/api/playlists/", 
+          "https://d1sfoak4w9c4ga.cloudfront.net/api/playlists/",
           {
             method: "POST",
             headers: {

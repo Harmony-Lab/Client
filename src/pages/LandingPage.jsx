@@ -79,16 +79,16 @@ function LandingPage() {
 
     try {
       const response = await fetch(
-        "https://d1sfoak4w9c4ga.cloudfront.net/api/emotions", 
+        "https://d1sfoak4w9c4ga.cloudfront.net/api/emotions",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-        credentials: "include",
-        body: JSON.stringify({ img_path: imageSrc })
-      }
-    );
+          credentials: "include",
+          body: JSON.stringify({ img_path: imageSrc })
+        }
+      );
 
       const data = await response.json();
       navigate("/mood", {
