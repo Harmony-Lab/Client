@@ -74,16 +74,13 @@ function PlayListPage() {
       if (!session) return;
 
       try {
-        const response = await fetch(
-          "https://d1sfoak4w9c4ga.cloudfront.net/api/playlists/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            credentials: "include"
-          }
-        );
+        const response = await fetch("http://3.36.65.47:8000/api/playlists/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch playlists");
@@ -108,7 +105,7 @@ function PlayListPage() {
       localStorage.removeItem("playlists");
 
       const response = await fetch(
-        "https://d1sfoak4w9c4ga.cloudfront.net/api/users/restart-session",
+        "https://3.36.65.47:8000/api/users/restart-session",
         {
           method: "GET",
           headers: {
