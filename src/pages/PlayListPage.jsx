@@ -105,7 +105,7 @@ function PlayListPage() {
       localStorage.removeItem("playlists");
 
       const response = await fetch(
-        "https://3.36.65.47:8000/api/users/restart-session",
+        "http://3.36.65.47:8000/api/users/restart-session",
         {
           method: "GET",
           headers: {
