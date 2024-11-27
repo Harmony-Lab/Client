@@ -15,7 +15,7 @@ export const SessionProvider = ({ children }) => {
     const fetchSession = async () => {
       try {
         const response = await fetch(
-          "https://3.36.65.47:8000/api/users/create-session"
+          "https://moodtuneserver.shop:8000/api/users/create-session"
         );
         if (!response.ok) {
           throw new Error("세션 요청 실패");
