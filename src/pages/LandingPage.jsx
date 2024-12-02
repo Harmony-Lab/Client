@@ -83,7 +83,7 @@ function LandingPage() {
           "Content-Type": "application/json"
         },
         credentials: "include",
-        body: JSON.stringify({ img_path: imaㅋgeSrc })
+        body: JSON.stringify({ img_path: imageSrc })
       });
 
       const data = await response.json();
