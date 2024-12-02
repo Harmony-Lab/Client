@@ -77,7 +77,7 @@ function LandingPage() {
     setCapture(false);
 
     try {
-      const response = await fetch("http://localhost:8000/api/emotions", {
+      const response = await fetch("http://43.203.219.49:3000/api/emotions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

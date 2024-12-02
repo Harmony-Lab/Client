@@ -74,13 +74,16 @@ function PlayListPage() {
       if (!session) return;
 
       try {
-        const response = await fetch("http://localhost:8000/api/playlists/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          credentials: "include"
-        });
+        const response = await fetch(
+          "http://43.203.219.49:3000/api/playlists/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials: "include"
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch playlists");
@@ -105,7 +108,7 @@ function PlayListPage() {
       localStorage.removeItem("playlists");
 
       const response = await fetch(
-        "http://localhost:8000/api/users/restart-session",
+        "http://43.203.219.49:3000/api/users/restart-session",
         {
           method: "GET",
           headers: {
