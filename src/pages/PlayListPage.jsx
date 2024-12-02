@@ -75,7 +75,7 @@ function PlayListPage() {
 
       try {
         const response = await fetch(
-          "http://43.203.219.49:3000/api/playlists/",
+          "http://43.203.219.49:8000/api/playlists/",
           {
             method: "POST",
             headers: {
@@ -108,7 +108,7 @@ function PlayListPage() {
       localStorage.removeItem("playlists");
 
       const response = await fetch(
-        "http://43.203.219.49:3000/api/users/restart-session",
+        "http://43.203.219.49:8000/api/users/restart-session",
         {
           method: "GET",
           headers: {

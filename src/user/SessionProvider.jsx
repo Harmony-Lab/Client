@@ -15,7 +15,7 @@ export const SessionProvider = ({ children }) => {
     const fetchSession = async () => {
       try {
         const response = await fetch(
-          "http://43.203.219.49:3000/api/users/create-session",
+          "http://43.203.219.49:8000/api/users/create-session",
           {
             method: "GET"
           }
