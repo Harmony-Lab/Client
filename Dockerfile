@@ -1,4 +1,10 @@
-FROM node:16.0.0
+FROM node:23.0.0
+
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /app
 WORKDIR /app
