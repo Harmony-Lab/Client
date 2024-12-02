@@ -53,7 +53,7 @@ function MoodPage() {
 
   const image = location.state?.image;
   const emotionData = location.state?.emotion;
-  const emotion = emotionData ? emotionData.emotion : " ";
+  const emotion = emotionData ? emotionData : " ";
 
   const handleClick = () => {
     navigate("/playlist", {

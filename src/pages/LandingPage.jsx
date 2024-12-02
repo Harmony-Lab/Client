@@ -74,17 +74,16 @@ function LandingPage() {
   };
 
   const handleCapture = async (imageSrc) => {
-    console.log("Captured image:", imageSrc);
     setCapture(false);
 
     try {
-      const response = await fetch("http://3.36.65.47:8000/api/emotions", {
+      const response = await fetch("http://localhost:8000/api/emotions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         credentials: "include",
-        body: JSON.stringify({ img_path: imageSrc })
+        body: JSON.stringify({ img_path: imaㅋgeSrc })
       });
 
       const data = await response.json();
@@ -101,7 +100,11 @@ function LandingPage() {
       <NavBar />
       <TextWrapper>Show me your mood right now</TextWrapper>
       <WebCam onCapture={capture ? handleCapture : null} />
-      {showButton && <Button title="START" onClick={handleStart} />}
+      {showButton && (
+        <>
+          <Button title="START" onClick={handleStart} />
+        </>
+      )}
       {countdown !== null && <CountDown>{countdown}</CountDown>}
     </Container>
   );

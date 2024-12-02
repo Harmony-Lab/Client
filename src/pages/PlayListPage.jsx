@@ -74,7 +74,7 @@ function PlayListPage() {
       if (!session) return;
 
       try {
-        const response = await fetch("http://3.36.65.47:8000/api/playlists/", {
+        const response = await fetch("http://localhost:8000/api/playlists/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -105,7 +105,7 @@ function PlayListPage() {
       localStorage.removeItem("playlists");
 
       const response = await fetch(
-        "http://3.36.65.47:8000/api/users/restart-session",
+        "http://localhost:8000/api/users/restart-session",
         {
           method: "GET",
           headers: {
