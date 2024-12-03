@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import WebCam from "../components/WebCam";
 import { useNavigate } from "react-router-dom";
+import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -48,6 +49,7 @@ function LandingPage() {
   const [showButton, setShowButton] = useState(true);
   const [capture, setCapture] = useState(false);
   const navigate = useNavigate();
+  const session = useSession();
 
   useEffect(() => {
     let timer;
@@ -75,14 +77,24 @@ function LandingPage() {
     setCapture(false);
 
     try {
+      if (!session) {
+        console.error("세션이 없습니다");
+        return;
+      }
+
       const response = await fetch("http://43.203.219.49:8000/api/emotions/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Cookie: `session_id=${session}`
         },
         credentials: "include",
         body: JSON.stringify({ img_path: imageSrc })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       navigate("/mood", {

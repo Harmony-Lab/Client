@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlayList from "../components/PlayList";
+import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -60,6 +61,7 @@ function PlayListPage() {
   const navigate = useNavigate();
   const emotion = location.state?.emotion;
   const [playlists, setPlaylists] = useState([]);
+  const session = useSession();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -69,7 +71,8 @@ function PlayListPage() {
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              Cookie: `session_id=${session}`
             },
             credentials: "include"
           }

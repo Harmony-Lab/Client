@@ -23,7 +23,6 @@ export const SessionProvider = ({ children }) => {
       }
       const data = await response.json();
       setSession(data.session_id);
-      console.log(session);
     } catch (error) {
       console.error("세션 요청 중 오류 발생:", error);
     }
