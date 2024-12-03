@@ -4,7 +4,6 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import WebCam from "../components/WebCam";
 import { useNavigate } from "react-router-dom";
-import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -49,7 +48,6 @@ function LandingPage() {
   const [showButton, setShowButton] = useState(true);
   const [capture, setCapture] = useState(false);
   const navigate = useNavigate();
-  const session = useSession();
 
   useEffect(() => {
     let timer;
