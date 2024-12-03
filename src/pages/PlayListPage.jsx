@@ -95,6 +95,9 @@ function PlayListPage() {
 
   const handleClick = async () => {
     try {
+      document.cookie =
+        "session_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
       const response = await fetch(
         "http://43.203.219.49:8000/api/users/restart-session",
         {
