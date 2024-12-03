@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef
+} from "react";
 
 const SessionContext = createContext();
 
@@ -8,6 +14,7 @@ export const useSession = () => {
 
 export const SessionProvider = ({ children }) => {
   const [session, setSession] = useState(null);
+  const fetchedRef = useRef(false);
 
   const fetchSession = async () => {
     try {
@@ -30,7 +37,10 @@ export const SessionProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchSession();
+    if (!fetchedRef.current) {
+      fetchedRef.current = true;
+      fetchSession();
+    }
   }, []);
 
   return (
