@@ -7,9 +7,7 @@ export const useSession = () => {
 };
 
 export const SessionProvider = ({ children }) => {
-  const [session, setSession] = useState(() => {
-    return localStorage.getItem("session_id") || null;
-  });
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -32,10 +30,8 @@ export const SessionProvider = ({ children }) => {
       }
     };
 
-    if (!session) {
-      fetchSession();
-    }
-  }, [session]);
+    fetchSession();
+  }, []);
 
   return (
     <SessionContext.Provider value={session}>
