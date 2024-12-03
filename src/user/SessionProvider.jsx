@@ -19,9 +19,12 @@ export const SessionProvider = ({ children }) => {
   const fetchSession = async () => {
     try {
       const response = await fetch(
-        "http://43.203.219.49:8000/api/users/create-session",
+        "http://43.203.219.49:8000/api/users/restart-session",
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
           credentials: "include"
         }
       );
@@ -30,7 +33,6 @@ export const SessionProvider = ({ children }) => {
       }
       const data = await response.json();
       setSession(data.session_id);
-      // document.cookie = `session_id=${data.session_id}; path=/; SameSite=None; Secure`;
     } catch (error) {
       console.error("세션 요청 중 오류 발생:", error);
     }
