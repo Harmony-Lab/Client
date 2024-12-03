@@ -71,8 +71,7 @@ function PlayListPage() {
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
-              Cookie: `session_id=${session}`
+              "Content-Type": "application/json"
             },
             credentials: "include"
           }

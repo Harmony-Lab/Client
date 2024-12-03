@@ -85,8 +85,7 @@ function LandingPage() {
       const response = await fetch("http://43.203.219.49:8000/api/emotions/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Cookie: `session_id=${session}`
+          "Content-Type": "application/json"
         },
         credentials: "include",
         body: JSON.stringify({ img_path: imageSrc })
