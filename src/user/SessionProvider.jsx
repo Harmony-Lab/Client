@@ -23,8 +23,7 @@ export const SessionProvider = ({ children }) => {
         }
         const data = await response.json();
         setSession(data.session_id);
-        localStorage.setItem("session_id", data.session_id);
-        document.cookie = `session_id=${data.session_id}; path=/; SameSite=Lax;`;
+        console.log(session);
       } catch (error) {
         console.error("세션 요청 중 오류 발생:", error);
       }
