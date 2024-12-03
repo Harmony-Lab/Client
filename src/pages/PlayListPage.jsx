@@ -4,7 +4,6 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlayList from "../components/PlayList";
-import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -59,20 +58,11 @@ const Text = styled.div`
 function PlayListPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const session = useSession();
   const emotion = location.state?.emotion;
   const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     const fetchPlaylists = async () => {
-      const storedPlaylists = localStorage.getItem("playlists");
-      if (storedPlaylists) {
-        setPlaylists(JSON.parse(storedPlaylists));
-        return;
-      }
-
-      if (!session) return;
-
       try {
         const response = await fetch(
           "http://43.203.219.49:8000/api/playlists/",
@@ -92,7 +82,6 @@ function PlayListPage() {
         const data = await response.json();
         if (data.songs && Array.isArray(data.songs)) {
           setPlaylists(data.songs);
-          localStorage.setItem("playlists", JSON.stringify(data.songs));
         }
       } catch (error) {
         console.error("Error fetching playlists:", error);
@@ -100,13 +89,10 @@ function PlayListPage() {
     };
 
     fetchPlaylists();
-  }, [session]);
+  }, []);
 
   const handleClick = async () => {
     try {
-      localStorage.removeItem("session_id");
-      localStorage.removeItem("playlists");
-
       const response = await fetch(
         "http://43.203.219.49:8000/api/users/restart-session",
         {
@@ -121,11 +107,6 @@ function PlayListPage() {
       if (!response.ok) {
         throw new Error("Failed to restart session");
       }
-
-      const data = await response.json();
-
-      localStorage.setItem("session_id", data.session_id);
-
       navigate("/");
     } catch (error) {
       console.error("Error restarting session:", error);

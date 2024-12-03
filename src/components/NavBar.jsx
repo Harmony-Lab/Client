@@ -23,9 +23,6 @@ function NavBar() {
   const navigate = useNavigate();
   const handleClick = async () => {
     try {
-      localStorage.removeItem("session_id");
-      localStorage.removeItem("playlists");
-
       const response = await fetch(
         "http://43.203.219.49:8000/api/users/restart-session",
         {
@@ -40,11 +37,6 @@ function NavBar() {
       if (!response.ok) {
         throw new Error("Failed to restart session");
       }
-
-      const data = await response.json();
-
-      localStorage.setItem("session_id", data.session_id);
-
       navigate("/");
     } catch (error) {
       console.error("Error restarting session:", error);
