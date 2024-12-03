@@ -9,26 +9,27 @@ export const useSession = () => {
 export const SessionProvider = ({ children }) => {
   const [session, setSession] = useState(null);
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const response = await fetch(
-          "http://43.203.219.49:8000/api/users/create-session",
-          {
-            method: "GET"
-          }
-        );
-        if (!response.ok) {
-          throw new Error("세션 요청 실패");
+  const fetchSession = async () => {
+    try {
+      const response = await fetch(
+        "http://43.203.219.49:8000/api/users/create-session",
+        {
+          method: "GET",
+          credentials: "include"
         }
-        const data = await response.json();
-        setSession(data.session_id);
-        console.log(session);
-      } catch (error) {
-        console.error("세션 요청 중 오류 발생:", error);
+      );
+      if (!response.ok) {
+        throw new Error("세션 요청 실패");
       }
-    };
+      const data = await response.json();
+      setSession(data.session_id);
+      console.log(session);
+    } catch (error) {
+      console.error("세션 요청 중 오류 발생:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchSession();
   }, []);
 
