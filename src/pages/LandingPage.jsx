@@ -43,6 +43,17 @@ const CountDown = styled.div`
   background-color: #48582f;
 `;
 
+const GuideLink = styled.a`
+  color: #d53d3d;
+  text-decoration: underline;
+  font-size: 30px;
+  margin-top: 20px;
+  cursor: pointer;
+  &:hover {
+    color: #47292b;
+  }
+`;
+
 function LandingPage() {
   const [countdown, setCountdown] = useState(null);
   const [showButton, setShowButton] = useState(true);
@@ -99,6 +110,13 @@ function LandingPage() {
   return (
     <Container>
       <NavBar />
+      <GuideLink
+        href="https://zziglet.notion.site/How-to-use-webcam-in-MoodTune-152b37c0f882809fad56cc42db989054?pvs=4"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        If you can't see the webcam...(click)
+      </GuideLink>
       <TextWrapper>Show me your mood right now</TextWrapper>
       <WebCam onCapture={capture ? handleCapture : null} />
       {showButton && (
