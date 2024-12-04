@@ -12,8 +12,23 @@ export const useSession = () => {
   return useContext(SessionContext);
 };
 
+const setCookie = (name, value, days) => {
+  const expires = new Date();
+  expires.setDate(expires.getDate() + days);
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;`;
+};
+
+const getCookie = (name) => {
+  const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+  return match ? match[2] : null;
+};
+
+const deleteCookie = (name) => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
+
 export const SessionProvider = ({ children }) => {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState(getCookie("session_id"));
   const fetchedRef = useRef(false);
 
   const fetchSession = async () => {
@@ -31,7 +46,11 @@ export const SessionProvider = ({ children }) => {
         throw new Error("세션 요청 실패");
       }
       const data = await response.json();
+
+      // 기존 쿠키 삭제 후 새로운 세션 설정
+      deleteCookie("session_id");
       setSession(data.session_id);
+      setCookie("session_id", data.session_id, 7);
     } catch (error) {
       console.error("세션 요청 중 오류 발생:", error);
     }
@@ -42,7 +61,7 @@ export const SessionProvider = ({ children }) => {
       fetchedRef.current = true;
       fetchSession();
     }
-  }, [session]);
+  }, []);
 
   return (
     <SessionContext.Provider value={session}>
