@@ -59,45 +59,13 @@ function PlayListPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const emotion = location.state?.emotion;
-  const [playlists, setPlaylists] = useState([]);
-
-  useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        const response = await fetch(
-          "http://43.203.219.49:8000/api/playlists/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              emotion: emotion
-            })
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch playlists");
-        }
-
-        const data = await response.json();
-        if (data.songs && Array.isArray(data.songs)) {
-          setPlaylists(data.songs);
-        }
-      } catch (error) {
-        console.error("Error fetching playlists:", error);
-      }
-    };
-
-    fetchPlaylists();
-  }, []);
+  const playlist = location.state?.playlist;
 
   const handleClick = async () => {
     try {
       navigate("/");
     } catch (error) {
-      console.error("Error restarting session:", error);
+      console.error("Error restarting: ", error);
     }
   };
 
@@ -113,7 +81,7 @@ function PlayListPage() {
         <Text className="playlist">Playlist</Text>
       </TextWrapper>
       <PlayListContainer>
-        {playlists.map((song, index) => (
+        {playlist.map((song, index) => (
           <PlayList
             key={index}
             title={song.title}

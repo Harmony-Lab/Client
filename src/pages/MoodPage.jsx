@@ -48,6 +48,7 @@ const Text = styled.div`
 `;
 
 function MoodPage() {
+  const [playlists, setPlaylists] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -55,10 +56,33 @@ function MoodPage() {
   const emotionData = location.state?.emotion;
   const emotion = emotionData ? emotionData : " ";
 
-  const handleClick = () => {
-    navigate("/playlist", {
-      state: { emotion }
-    });
+  const handleClick = async (playlists) => {
+    try {
+      const response = await fetch("http://43.203.219.49:8000/api/playlists/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          emotion: emotion
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch playlists");
+      }
+
+      const data = await response.json();
+      if (data.songs && Array.isArray(data.songs)) {
+        setPlaylists(data.songs);
+
+        navigate("/playlist", {
+          state: { emotion: emotion, playlist: playlists }
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+    }
   };
 
   return (
