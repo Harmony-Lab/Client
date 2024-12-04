@@ -77,7 +77,10 @@ function MoodPage() {
         setPlaylists(data.songs);
 
         navigate("/playlist", {
-          state: { emotion: emotion, playlist: playlists }
+          state: {
+            emotion: emotion,
+            playlist: data.songs
+          }
         });
       }
     } catch (error) {
