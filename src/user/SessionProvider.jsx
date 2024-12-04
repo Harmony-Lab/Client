@@ -18,17 +18,13 @@ export const SessionProvider = ({ children }) => {
 
   const fetchSession = async () => {
     try {
-      document.cookie =
-        "session_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
       const response = await fetch(
-        "http://43.203.219.49:8000/api/users/restart-session",
+        "http://43.203.219.49:8000/api/users/create-session",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
-          },
-          credentials: "include"
+          }
         }
       );
       if (!response.ok) {
@@ -46,7 +42,7 @@ export const SessionProvider = ({ children }) => {
       fetchedRef.current = true;
       fetchSession();
     }
-  }, []);
+  }, [session]);
 
   return (
     <SessionContext.Provider value={session}>
