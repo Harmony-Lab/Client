@@ -4,7 +4,6 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlayList from "../components/PlayList";
-import { useSession } from "../user/SessionProvider";
 
 const Container = styled.div`
   width: calc(100%);
@@ -61,7 +60,6 @@ function PlayListPage() {
   const navigate = useNavigate();
   const emotion = location.state?.emotion;
   const [playlists, setPlaylists] = useState([]);
-  const session = useSession();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -73,7 +71,9 @@ function PlayListPage() {
             headers: {
               "Content-Type": "application/json"
             },
-            credentials: "include"
+            body: JSON.stringify({
+              emotion: emotion
+            })
           }
         );
 
@@ -95,23 +95,6 @@ function PlayListPage() {
 
   const handleClick = async () => {
     try {
-      document.cookie =
-        "session_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-      const response = await fetch(
-        "http://43.203.219.49:8000/api/users/restart-session",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          credentials: "include"
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to restart session");
-      }
       navigate("/");
     } catch (error) {
       console.error("Error restarting session:", error);
