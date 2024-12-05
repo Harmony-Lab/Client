@@ -54,10 +54,42 @@ const GuideLink = styled.a`
   }
 `;
 
+const LoadingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const LoadingSpinner = styled.div`
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 function LandingPage() {
   const [countdown, setCountdown] = useState(null);
   const [showButton, setShowButton] = useState(true);
   const [capture, setCapture] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,6 +116,7 @@ function LandingPage() {
 
   const handleCapture = async (imageSrc) => {
     setCapture(false);
+    setIsLoading(true);
 
     try {
       const response = await fetch("http://43.203.219.49:8000/api/emotions/", {
@@ -104,6 +137,8 @@ function LandingPage() {
       });
     } catch (error) {
       console.error("Error analyzing emotion:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,6 +160,12 @@ function LandingPage() {
         </>
       )}
       {countdown !== null && <CountDown>{countdown}</CountDown>}
+
+      {isLoading && (
+        <LoadingOverlay>
+          <LoadingSpinner />
+        </LoadingOverlay>
+      )}
     </Container>
   );
 }
