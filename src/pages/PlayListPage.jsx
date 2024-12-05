@@ -41,17 +41,26 @@ const TextWrapper = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: 48px;
-  font-weight: 900;
   font-family: "Ruda";
   margin: 0;
 
   &.playlist {
+    font-size: 48px;
+    font-weight: 900;
     color: #47292b;
   }
 
   &.emotion {
+    font-size: 48px;
+    font-weight: 900;
     color: #ee4e4e;
+  }
+
+  &.comment {
+    font-size: 28px;
+    font-weight: 600;
+    color: #47292b;
+    text-align: center;
   }
 `;
 
@@ -80,6 +89,7 @@ function PlayListPage() {
         <Text className="emotion">{emotion ? emotion : ""}</Text>
         <Text className="playlist">Playlist</Text>
       </TextWrapper>
+      <Text className="comment">Click on the music title (●'◡'●)</Text>
       <PlayListContainer>
         {playlist.map((song, index) => (
           <PlayList
