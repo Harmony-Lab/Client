@@ -110,7 +110,7 @@ function LandingPage() {
       if (response.ok) {
         const data = await response.json();
         setToken(data.token);
-        user.token = token;
+        user.token = data.token;
         console.log("Token obtained:", data.token);
 
         // 로컬 스토리지에 토큰 저장
@@ -145,7 +145,7 @@ function LandingPage() {
     }
 
     return () => clearInterval(timer);
-  }, [countdown, token]);
+  }, [countdown]);
 
   const handleStart = () => {
     setShowButton(false);
