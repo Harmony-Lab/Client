@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import WebCam from "../components/WebCam";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../api/UserContext";
 
 const Container = styled.div`
   width: calc(100%);
@@ -90,6 +91,8 @@ function LandingPage() {
   const [showButton, setShowButton] = useState(true);
   const [capture, setCapture] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [token, setToken] = useState(user.token);
+  const user = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -108,6 +111,10 @@ function LandingPage() {
     }
     return () => clearInterval(timer);
   }, [countdown]);
+
+  if (token == null) {
+    fetchToken();
+  }
 
   const handleStart = () => {
     setShowButton(false);
@@ -139,6 +146,35 @@ function LandingPage() {
       console.error("Error analyzing emotion:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchToken = async () => {
+    try {
+      const response = await fetch(
+        "http://43.203.219.49:8000/api/users/create-session",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setToken(data.token);
+        user.token = token;
+        console.log("Token obtained:", data.token);
+
+        // 로컬 스토리지에 토큰 저장
+        localStorage.setItem("jwtToken", data.token);
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+    } catch (error) {
+      console.error("Failed to obtain token:", error);
     }
   };
 
