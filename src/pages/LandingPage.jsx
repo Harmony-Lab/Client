@@ -139,12 +139,13 @@ function LandingPage() {
         });
       }, 1000);
     }
-    return () => clearInterval(timer);
-  }, [countdown]);
 
-  if (token == null) {
-    fetchToken();
-  }
+    if (token == null) {
+      fetchToken();
+    }
+
+    return () => clearInterval(timer);
+  }, [countdown, token]);
 
   const handleStart = () => {
     setShowButton(false);
