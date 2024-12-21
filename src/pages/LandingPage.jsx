@@ -91,12 +91,13 @@ function LandingPage() {
   const [showButton, setShowButton] = useState(true);
   const [capture, setCapture] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [token, setToken] = useState(user.token);
+  const [token, setToken] = useState();
   const user = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
     let timer;
+    setToken(user.token);
     if (countdown !== null) {
       timer = setInterval(() => {
         setCountdown((prev) => {
