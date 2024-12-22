@@ -3,6 +3,7 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../api/UserContext";
 
 const Container = styled.div`
   width: calc(100%);
@@ -51,6 +52,7 @@ function MoodPage() {
   const [playlists, setPlaylists] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useUser();
 
   const image = location.state?.image;
   const emotionData = location.state?.emotion;
@@ -62,7 +64,7 @@ function MoodPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${user.token}`
         }
       });
 

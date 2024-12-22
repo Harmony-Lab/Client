@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlayList from "../components/PlayList";
+import { useUser } from "../api/UserContext";
 
 const Container = styled.div`
   width: calc(100%);
@@ -67,6 +68,8 @@ const Text = styled.div`
 function PlayListPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useUser();
+
   const emotion = location.state?.emotion;
   const playlist = location.state?.playlist;
 
@@ -78,7 +81,7 @@ function PlayListPage() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${user.token}`
           }
         }
       );
