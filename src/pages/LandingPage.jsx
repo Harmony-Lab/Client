@@ -114,7 +114,7 @@ function LandingPage() {
         console.log("Token obtained:", data.token);
 
         // 로컬 스토리지에 토큰 저장
-        localStorage.setItem("jwtToken", data.token);
+        localStorage.setItem(data.token);
       } else {
         const errorData = await response.json();
         throw new Error(errorData.message);
