@@ -114,7 +114,7 @@ function LandingPage() {
         console.log("Token obtained:", data.token);
 
         // 로컬 스토리지에 토큰 저장
-        localStorage.setItem(data.token);
+        localStorage.setItem("jwtToken", data.token);
       } else {
         const errorData = await response.json();
         throw new Error(errorData.message);
@@ -160,7 +160,8 @@ function LandingPage() {
       const response = await fetch("http://43.203.219.49:8000/api/emotions/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ img_path: imageSrc })
       });

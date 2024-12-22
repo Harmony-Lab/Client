@@ -61,7 +61,8 @@ function MoodPage() {
       const response = await fetch("http://43.203.219.49:8000/api/playlists/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         }
       });
 
